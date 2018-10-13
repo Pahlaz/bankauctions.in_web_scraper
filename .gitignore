@@ -7,3 +7,6 @@
 
 # Node Dependencies
 /node_modules
+
+# db folder
+db
