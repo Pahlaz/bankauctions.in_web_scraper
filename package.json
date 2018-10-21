@@ -1,10 +1,10 @@
 {
   "name": "bankauctions.in_web_scraper",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "bankauctions.in_web_scraper",
   "main": "./app/scraper.js",
   "scripts": {
-    "start": "node ./app/scraper.js"
+    "scraper": "node ./app/scraper.js"
   },
   "keywords": [
     "web scraper",

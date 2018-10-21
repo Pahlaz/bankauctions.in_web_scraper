@@ -1,16 +1,28 @@
 # bankauctions.in web_scraper: Setup
-User manual to start using the app.
+
+## Introduction
+
+A Node JS app for scrapping data from **https://bankauctions.in**.
+
+## Dependencies
+
++ mongoose: NoSQL Database
++ puppeteer: Headless web browser 
 
 ## How to Use
++ Install all dependencies
+  ```
+    npm install
+  ```
 
 + Start mongodb
   ```
     mongod -dbpath ./db/data
   ```
 
-+ Start Server
++ Start scraping
   ```
-    npm run start
+    npm run scraper
   ```
 
 ## About Author

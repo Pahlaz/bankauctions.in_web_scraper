@@ -4,6 +4,7 @@ const mongoose = require('mongoose'),
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 
+// for connecting database with specified URL
 function connect(url) {
   mongoose.connect(url)
           .then( () => console.log("[DB] Connetion Established") )
@@ -28,7 +29,7 @@ function addPost(obj) {
     });
 }
 
-// TODO: method should work synchronously
+// check if post already exist in database or not
 async function isPostExist(listingID) {
   var post = await Post.find({listingID: listingID});
 
