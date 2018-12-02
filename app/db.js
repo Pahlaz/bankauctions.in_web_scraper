@@ -6,7 +6,7 @@ mongoose.Promise = global.Promise;
 
 // for connecting database with specified URL
 function connect(url) {
-  mongoose.connect(url)
+  mongoose.connect(url, { useNewUrlParser: true })
           .then( () => console.log("[DB] Connetion Established") )
           .catch( (error) => console.log(error) );
 }
