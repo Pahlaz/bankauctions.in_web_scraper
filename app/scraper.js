@@ -2,10 +2,10 @@ const puppeteer = require('puppeteer'),
       selectors = require('./selectors'),
       constants = require('./constants'),
       db = require('./db'),
-      config = require('./config/default');
+      DBURL = process.env.DBURL || 'mongodb://localhost/db';
 
 // Database connectivity
-db.connect(config.dbURL);
+db.connect(DBURL);
 
 (async () => {
   const browser = await puppeteer.launch({headless: true});

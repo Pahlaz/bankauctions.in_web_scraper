@@ -15,7 +15,7 @@ A Node JS app for scrapping data from **https://bankauctions.in**.
     npm install
   ```
 
-+ Start mongodb
++ Start mongodb or set environtemt variable **DBURL** to the database link
   ```
     mongod -dbpath ./db/data
   ```
