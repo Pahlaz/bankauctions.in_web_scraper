@@ -4,7 +4,7 @@
   "description": "bankauctions.in_web_scraper",
   "main": "./app/scraper.js",
   "scripts": {
-    "scraper": "node ./app/scraper.js"
+    "start": "node ./app/scraper.js"
   },
   "keywords": [
     "web scraper",
