@@ -22,7 +22,7 @@ A Node JS app for scrapping data from **https://bankauctions.in**.
 
 + Start scraping
   ```
-    npm run scraper
+    npm run start
   ```
 
 ## About Author
