@@ -34,51 +34,58 @@ db.connect(DBURL);
       for(let i = 0; i < posts.length; i++) {
         // getting current listing id
         var currentListingID = await page.evaluate((listingIDSelector, index) => {
-          return document.querySelectorAll(listingIDSelector)[index].textContent.trim().match(/\d+/)[0];
+          let listingID = document.querySelectorAll(listingIDSelector)[index].textContent.trim().match(/\d+/);
+          if (listingID != null)
+            return listingID[0];
+          else 
+            return -1;
         }, selectors.postHeader, i);
 
-        console.log("currentListingID: " + currentListingID);
+        // FIX: if header dosen't have the listing ID
+        if(currentListingID != -1) {
+          console.log("currentListingID: " + currentListingID);
 
-        // add post to db if already not exist
-        if( !(await db.isPostExist(currentListingID)) ) {
-          await page.waitForSelector(selectors.postHeader);
-          await posts[i].click();
-          await page.waitFor(5000);
+          // add post to db if already not exist
+          if( !(await db.isPostExist(currentListingID)) ) {
+            await page.waitForSelector(selectors.postHeader);
+            await posts[i].click();
+            await page.waitFor(5000);
 
-          // selecting all keys in table
-          var postTableRows = await page.$$(selectors.postTableRows);
-          let postDetails = {};
+            // selecting all keys in table
+            var postTableRows = await page.$$(selectors.postTableRows);
+            let postDetails = {};
 
-          // adding listing id value in object 
-          postDetails["listingID"] = await page.evaluate((listingIDSelector) => {
-            return document.querySelector(listingIDSelector).innerText;
-          }, selectors.listingID);
+            // adding listing id value in object 
+            postDetails["listingID"] = await page.evaluate((listingIDSelector) => {
+              return document.querySelector(listingIDSelector).innerText;
+            }, selectors.listingID);
 
-          // adding rest key values
-          for(let j = 1; j <= postTableRows.length - 3; j++){
-            let keySelector = selectors.postTable.replace('$row', j).replace('$col', 1);
-            let valueSelector = selectors.postTable.replace('$row', j).replace('$col', 2);
-            
-            let key = await page.evaluate((keySelector) => {
-              return document.querySelector(keySelector).innerText;
-            }, keySelector);
+            // adding rest key values
+            for(let j = 1; j <= postTableRows.length - 3; j++){
+              let keySelector = selectors.postTable.replace('$row', j).replace('$col', 1);
+              let valueSelector = selectors.postTable.replace('$row', j).replace('$col', 2);
+              
+              let key = await page.evaluate((keySelector) => {
+                return document.querySelector(keySelector).innerText;
+              }, keySelector);
 
-            key = key.replace(':', '').trim();
+              key = key.replace(':', '').trim();
 
-            let value = await page.evaluate((valueSelector) => {
-              return document.querySelector(valueSelector).innerText;
-            }, valueSelector);
+              let value = await page.evaluate((valueSelector) => {
+                return document.querySelector(valueSelector).innerText;
+              }, valueSelector);
 
-            postDetails[key] = value.trim();
+              postDetails[key] = value.trim();
+            }
+
+            db.addPost(postDetails);
+
+            await page.goBack();
+            posts = await page.$$(selectors.postHeader);
           }
-
-          db.addPost(postDetails);
-
-          await page.goBack();
-          posts = await page.$$(selectors.postHeader);
-        }
-        else {
-          console.log('post already exist');
+          else {
+            console.log('post already exist');
+          }
         }
       }
 
@@ -87,7 +94,8 @@ db.connect(DBURL);
       pageNumber++;
 
       // scrape posts from rest page
-      await scrapePosts(constants.baseURLWithPageNumber.replace('<page_no>', pageNumber));
+      await scrapePosts(constants.baseURLWithPageNumber.replace('<page_no>', pageNumber))
+              .catch( (error) => console.log(`[Scraper] ${error}`));
     }
     else {
       console.log('Scrapped all posts');
@@ -95,7 +103,8 @@ db.connect(DBURL);
   }
 
   // scrape posts from all pages
-  await scrapePosts(constants.baseURLWithPageNumber.replace('<page_no>', pageNumber));
+  await scrapePosts(constants.baseURLWithPageNumber.replace('<page_no>', pageNumber))
+          .catch( (error) => console.log(`[Scraper] ${error}`));
 
   await browser.close();
   db.disconnect();
