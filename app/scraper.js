@@ -1,3 +1,6 @@
+// for initializing environment variables
+require('dotenv').config()
+
 const puppeteer = require('puppeteer'),
       selectors = require('./selectors'),
       constants = require('./constants'),

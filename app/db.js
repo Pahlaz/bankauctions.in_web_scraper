@@ -8,7 +8,7 @@ mongoose.Promise = global.Promise;
 function connect(url) {
   mongoose.connect(url, { useNewUrlParser: true })
           .then( () => console.log("[DB] Connetion Established") )
-          .catch( (error) => console.log(error) );
+          .catch( (error) => console.log("[DB] " + error) );
 }
 
 // for disconnecting the db connection
