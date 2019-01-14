@@ -11,5 +11,4 @@
 # db folder
 db
 
-# dev dependency
 .env
