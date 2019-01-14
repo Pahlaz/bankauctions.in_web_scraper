@@ -11,7 +11,7 @@ const puppeteer = require('puppeteer'),
 db.connect(DBURL);
 
 (async () => {
-  const browser = await puppeteer.launch({headless: true});
+  const browser = await puppeteer.launch({args: ['--no-sandbox'], headless: true});
   var pageNumber = 1;
   
   var scrapePosts = async (url) => {
