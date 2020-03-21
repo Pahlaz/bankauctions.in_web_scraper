@@ -16,7 +16,7 @@
   "author": "Divyank Pahlazani",
   "license": "MIT",
   "dependencies": {
-    "mongoose": "^5.3.3",
+    "mongoose": "^5.7.5",
     "puppeteer": "^1.9.0",
     "dotenv": "^6.2.0"
   }
